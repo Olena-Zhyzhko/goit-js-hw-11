@@ -13,6 +13,7 @@ const BASE_URL = "https://pixabay.com/api/";
 const API_KEY = '29231182-3aef70459dc4e66f5b04dc644';
 const LOCALSTORAGE_KEY = "fetch_key_images";
 let currentPage;
+const perPage = 40;
 btnLoadMore.classList.add("is-hidden");
 
 
@@ -42,7 +43,7 @@ const afterFetch = async (url) => {
             Notiflix.Notify.success(`Hooray! We found ${totalResults} images.`);
         }
 
-        const maxResult = Math.ceil(totalResults / 100);
+        const maxResult = Math.ceil(totalResults / perPage);
     console.log(maxResult);
 
          if (maxResult === currentPage) {
@@ -85,7 +86,7 @@ function onBtnLoadMore(e) {
 function createUrl() {
     const surchImages = form.elements.searchQuery.value;
     // updauteInput();
-    const urlPart = `q=${surchImages}&image_type=photo&orientation=horizontal&safesearch=true&per_page=100&page=${currentPage}`;
+    const urlPart = `q=${surchImages}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${perPage}&page=${currentPage}`;
     // saveFormValue();
     return urlPart;
 }
@@ -125,27 +126,28 @@ function createGallery(galleryItems) {
         
 function createPhotoCard({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) {
     return `
-    <a class="gallery__item" href="${largeImageURL}">
     <div class="photo-card">
-        
-            <img src="${webformatURL}" alt="${tags}" loading="lazy" />
-        
+        <a class="gallery__item" href="${largeImageURL}">
+        <div class="photo__thumb">
+            <img class="gallery__image" src="${webformatURL}" alt="${tags}" loading="lazy" />
+        </div>
         <div class="info">
             <p class="info-item">
-            <b>Likes </b> ${likes}
+            <b>Likes </b> <br>
+            <span class="statictics">${likes}</span>
             </p>
             <p class="info-item">
-            <b>Views</b> ${views}
+            <b>Views</b> <span class="statictics">${views}</span>
             </p>
             <p class="info-item">
-            <b>Comments</b> ${comments}
+            <b>Comments</b> <span class="statictics">${comments}</span>
             </p>
             <p class="info-item">
-            <b>Downloads</b> ${downloads}
+            <b>Downloads</b> <span class="statictics">${downloads}</span>
             </p>
         </div>
-    </div>
     </a>
+    </div>
      `};
 
 
