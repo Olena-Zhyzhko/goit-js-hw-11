@@ -1,17 +1,15 @@
-// import './css/styles.css';
 import Notiflix from 'notiflix';
-import axios from 'axios';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
-import fetchImages from './moduls/fetchImages';
-import insertGallery from './moduls/createGallery';
+import { fetchImages, PER_PAGE } from './modules/fetchImages';
+import insertGallery from './modules/createGallery';
 
 
 const form = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
 const btnLoadMore = document.querySelector('.load-more');
 let currentPage;
-const perPage = 40;
+
 btnLoadMore.classList.add("is-hidden");
 
 
@@ -23,20 +21,19 @@ function onFormBtnSubmit(e) {
     e.preventDefault();
     cleanerImageResult();
     currentPage = 1;
-    afterFetch(createUrl(), currentPage);
+    handleResults(createUrl(), currentPage);
 }
 
 function onBtnLoadMore() {
     btnLoadMore.classList.add("is-hidden");
     currentPage += 1;
-    afterFetch(createUrl(), currentPage);
-    btnLoadMore.classList.remove("is-hidden");
+    handleResults(createUrl(), currentPage);
 }
 
-async function afterFetch(surchImages, currentPage) {
+async function handleResults(surchImages, currentPage) {
     try {
-        const responceData = await fetchImages(surchImages, currentPage);
-        checkResult(responceData, currentPage);
+        const responseData = await fetchImages(surchImages, currentPage);
+        checkResult(responseData, currentPage);
     }
     catch {error => { 
         console.log(error);
@@ -50,13 +47,12 @@ function createUrl() {
 }
 
 
-function checkResult(responceData, currentPage) {
-        const searchResult = responceData.hits;
-        const totalResults = responceData.totalHits;
-        const maxResult = Math.ceil(totalResults / perPage);
+function checkResult(responseData, currentPage) {
+        const searchResult = responseData.hits;
+        const totalResults = responseData.totalHits;
+        const maxPage = Math.ceil(totalResults / PER_PAGE);
 
-        const arrayResponse = Object.keys(searchResult);
-        if (arrayResponse.length === 0) {
+        if (searchResult.length === 0) {
             notFoundImages();
         } else {
             if (currentPage === 1) {
@@ -68,7 +64,7 @@ function checkResult(responceData, currentPage) {
             btnLoadMore.classList.remove("is-hidden");
         }
     
-        if (maxResult === currentPage) {
+        if (maxPage === currentPage) {
             btnLoadMore.classList.add("is-hidden");
          Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
         }
@@ -83,4 +79,3 @@ function cleanerImageResult() {
 }
 
 const lightBox = new SimpleLightbox('.gallery a');
-

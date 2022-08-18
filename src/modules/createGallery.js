@@ -1,9 +1,8 @@
 const gallery = document.querySelector('.gallery');
 
-export default function insertGallery(responce) {
-    const galleryItem = createGallery(responce);
+export default function insertGallery(response) {
+    const galleryItem = createGallery(response);
     gallery.insertAdjacentHTML('beforeend', galleryItem);
-    // gallery.innerHTML = galleryItem;
 };
 
 function createGallery(galleryItems) {
