@@ -1,5 +1,4 @@
 import axios from 'axios';
-import PER_PAGE from '../index'
 const BASE_URL = "https://pixabay.com/api/";
 const API_KEY = '29231182-3aef70459dc4e66f5b04dc644';
 const FILTERS = 'image_type=photo&orientation=horizontal&safesearch=true';
