@@ -6,8 +6,8 @@ const PER_PAGE = 40;
 
 
 
-const fetchImages = async (surchImages, currentPage) => {
-    const responce = await axios.get(`${BASE_URL}?key=${API_KEY}&q=${surchImages}&${FILTERS}&per_page=${PER_PAGE}&page=${currentPage}`);
+const fetchImages = async (searchImages, currentPage) => {
+    const responce = await axios.get(`${BASE_URL}?key=${API_KEY}&q=${searchImages}&${FILTERS}&per_page=${PER_PAGE}&page=${currentPage}`);
     return responce.data;
 }
 

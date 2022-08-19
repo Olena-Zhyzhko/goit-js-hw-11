@@ -8,26 +8,21 @@ import insertGallery from './modules/createGallery';
 const form = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
 const btnLoadMore = document.querySelector('.load-more');
-let currentPage;
+let currentPage = 1;
 
-btnLoadMore.classList.add("is-hidden");
+form.addEventListener('submit', onBtnClick);
+btnLoadMore.addEventListener('click', onBtnClick);
 
 
-
-form.addEventListener('submit', onFormBtnSubmit);
-btnLoadMore.addEventListener('click', onBtnLoadMore);
-
-function onFormBtnSubmit(e) {
+function onBtnClick(e) {
     e.preventDefault();
-    cleanerImageResult();
-    currentPage = 1;
-    handleResults(createUrl(), currentPage);
-}
-
-function onBtnLoadMore() {
     btnLoadMore.classList.add("is-hidden");
+    if (e.type === "submit") {
+         cleanerImageResult();
+    }
+    const searchImages = createUrl();
+    handleResults(searchImages, currentPage);
     currentPage += 1;
-    handleResults(createUrl(), currentPage);
 }
 
 async function handleResults(surchImages, currentPage) {
