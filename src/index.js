@@ -18,26 +18,21 @@ function onFormBtnSubmit(e) {
     e.preventDefault();
     btnLoadMore.classList.add("is-hidden");
     cleanerImageResult();
-    // searchImages = form.elements.searchQuery.value;
-searchImages = e.currentTarget.elements.searchQuery.value;
-    
-
-    // currentPage = 1;
-    handleResults(currentPage, searchImages);
-    // return searchImages;
+    searchImages = form.elements.searchQuery.value;
+    handleResults();
 }
 
-function onBtnLoadMore(e, searchImages) {
+function onBtnLoadMore() {
     btnLoadMore.classList.add("is-hidden");
     currentPage += 1;
-    handleResults(currentPage, searchImages);
+    handleResults();
 }
 
 
-async function handleResults(currentPage, searchImages) {
+async function handleResults() {
     try {
         const responseData = await fetchImages(currentPage, searchImages);
-        checkResult(responseData, currentPage);
+        checkResult(responseData);
     }
     catch {error => { 
         console.log(error);
@@ -45,13 +40,8 @@ async function handleResults(currentPage, searchImages) {
     }
 };
 
-// function createUrl() {
-//     const surchImages = form.elements.searchQuery.value;
-//     return surchImages;
-// }
 
-
-function checkResult(responseData, currentPage) {
+function checkResult(responseData) {
         const searchResult = responseData.hits;
         const totalResults = responseData.totalHits;
         const maxPage = Math.ceil(totalResults / PER_PAGE);
