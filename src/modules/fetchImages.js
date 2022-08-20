@@ -1,4 +1,5 @@
 import axios from 'axios';
+// import searchImages from '../index'
 const BASE_URL = "https://pixabay.com/api/";
 const API_KEY = '29231182-3aef70459dc4e66f5b04dc644';
 const FILTERS = 'image_type=photo&orientation=horizontal&safesearch=true';
@@ -6,7 +7,7 @@ const PER_PAGE = 40;
 
 
 
-const fetchImages = async (searchImages, currentPage) => {
+const fetchImages = async (currentPage, searchImages) => {
     const responce = await axios.get(`${BASE_URL}?key=${API_KEY}&q=${searchImages}&${FILTERS}&per_page=${PER_PAGE}&page=${currentPage}`);
     return responce.data;
 }

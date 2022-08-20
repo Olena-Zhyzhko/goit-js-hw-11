@@ -8,22 +8,30 @@ import insertGallery from './modules/createGallery';
 const form = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
 const btnLoadMore = document.querySelector('.load-more');
-let currentPage = 1;
+let currentPage;
+let searchImages;
 
-form.addEventListener('submit', onBtnClick);
-btnLoadMore.addEventListener('click', onBtnClick);
+form.addEventListener('submit', onFormBtnSubmit);
+btnLoadMore.addEventListener('click', onBtnLoadMore);
 
-
-function onBtnClick(e) {
+function onFormBtnSubmit(e) {
     e.preventDefault();
     btnLoadMore.classList.add("is-hidden");
-    if (e.type === "submit") {
-         cleanerImageResult();
-    }
-    const searchImages = createUrl();
-    handleResults(searchImages, currentPage);
-    currentPage += 1;
+    cleanerImageResult();
+    const searchImages = form.elements.searchQuery.value;
+    console.log(form.elements.searchQuery.value);
+
+    currentPage = 1;
+    handleResults(currentPage, searchImages);
+    // return searchImages;
 }
+
+function onBtnLoadMore(e, searchImages) {
+    btnLoadMore.classList.add("is-hidden");
+    currentPage += 1;
+    handleResults(currentPage, searchImages);
+}
+
 
 async function handleResults(surchImages, currentPage) {
     try {
@@ -36,10 +44,10 @@ async function handleResults(surchImages, currentPage) {
     }
 };
 
-function createUrl() {
-    const surchImages = form.elements.searchQuery.value;
-    return surchImages;
-}
+// function createUrl() {
+//     const surchImages = form.elements.searchQuery.value;
+//     return surchImages;
+// }
 
 
 function checkResult(responseData, currentPage) {
