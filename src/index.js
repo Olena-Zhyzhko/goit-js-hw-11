@@ -8,8 +8,8 @@ import insertGallery from './modules/createGallery';
 const form = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
 const btnLoadMore = document.querySelector('.load-more');
-let currentPage;
-let searchImages;
+let currentPage = 1;
+let searchImages = "";
 
 form.addEventListener('submit', onFormBtnSubmit);
 btnLoadMore.addEventListener('click', onBtnLoadMore);
@@ -18,10 +18,11 @@ function onFormBtnSubmit(e) {
     e.preventDefault();
     btnLoadMore.classList.add("is-hidden");
     cleanerImageResult();
-    const searchImages = form.elements.searchQuery.value;
-    console.log(form.elements.searchQuery.value);
+    // searchImages = form.elements.searchQuery.value;
+searchImages = e.currentTarget.elements.searchQuery.value;
+    
 
-    currentPage = 1;
+    // currentPage = 1;
     handleResults(currentPage, searchImages);
     // return searchImages;
 }
@@ -33,9 +34,9 @@ function onBtnLoadMore(e, searchImages) {
 }
 
 
-async function handleResults(surchImages, currentPage) {
+async function handleResults(currentPage, searchImages) {
     try {
-        const responseData = await fetchImages(surchImages, currentPage);
+        const responseData = await fetchImages(currentPage, searchImages);
         checkResult(responseData, currentPage);
     }
     catch {error => { 
