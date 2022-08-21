@@ -9,30 +9,33 @@ const form = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
 const btnLoadMore = document.querySelector('.load-more');
 let currentPage = 1;
-let searchImages = "";
+let searchWord = "";
 
 form.addEventListener('submit', onFormBtnSubmit);
 btnLoadMore.addEventListener('click', onBtnLoadMore);
 
 function onFormBtnSubmit(e) {
     e.preventDefault();
+    searchWord = form.elements.searchQuery.value;
+    if (searchWord === '') {
+        return;
+    }
     btnLoadMore.classList.add("is-hidden");
     cleanerImageResult();
-    searchImages = form.elements.searchQuery.value;
-    handleResults();
+    searchImages();
 }
 
 function onBtnLoadMore() {
     btnLoadMore.classList.add("is-hidden");
     currentPage += 1;
-    handleResults();
+    searchImages();
 }
 
 
-async function handleResults() {
+async function searchImages() {
     try {
-        const responseData = await fetchImages(currentPage, searchImages);
-        checkResult(responseData);
+        const responseData = await fetchImages(currentPage, searchWord);
+        handleResult(responseData);
     }
     catch {error => { 
         console.log(error);
@@ -41,7 +44,7 @@ async function handleResults() {
 };
 
 
-function checkResult(responseData) {
+function handleResult(responseData) {
         const searchResult = responseData.hits;
         const totalResults = responseData.totalHits;
         const maxPage = Math.ceil(totalResults / PER_PAGE);
@@ -50,7 +53,7 @@ function checkResult(responseData) {
             notFoundImages();
         } else {
             if (currentPage === 1) {
-            Notiflix.Notify.success(`Hooray! We found ${totalResults} images.`);
+                sumOfFoundImages(totalResults);
             }
 
             insertGallery(searchResult);
@@ -60,13 +63,22 @@ function checkResult(responseData) {
     
         if (maxPage === currentPage) {
             btnLoadMore.classList.add("is-hidden");
-         Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+            endOfSearchResults();
         }
 }
 
 function notFoundImages() {
     Notiflix.Notify.info('Sorry, there are no images matching your search query. Please try again.');
 }
+
+function sumOfFoundImages(totalResults) {
+    Notiflix.Notify.success(`Hooray! We found ${totalResults} images.`);
+}
+
+function endOfSearchResults() {
+         Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+}
+
 
 function cleanerImageResult() {
     gallery.innerHTML = "";
