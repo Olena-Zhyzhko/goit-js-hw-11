@@ -17,7 +17,7 @@ btnLoadMore.addEventListener('click', onBtnLoadMore);
 function onFormBtnSubmit(e) {
     e.preventDefault();
     searchWord = form.elements.searchQuery.value;
-    if (searchWord === '') {
+    if (searchWord === "") {
         return;
     }
     btnLoadMore.classList.add("is-hidden");
